@@ -8,7 +8,7 @@ public class ToggleUI : MonoBehaviour
 
     void Start()
     {
-        transform.SetParent(GameObject.Find("RightControllerAnchor").transform);
+        //transform.SetParent(GameObject.Find("RightControllerAnchor").transform);
     }
     // Update is called once per frame
     void Update()
