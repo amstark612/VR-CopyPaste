@@ -4,10 +4,11 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using System;
+using System.Runtime.CompilerServices;
 
 public class GetAllImages : MonoBehaviour
 {
-
 
     // panel sizes as set in inspector
     int panelWidth = 676;
@@ -15,13 +16,13 @@ public class GetAllImages : MonoBehaviour
     int panelSpacing = 12;
     float numCols = 6.0f; // float for calculation purposes later
 
-    public string[] fileNames;
+    string[] fileNames;
     public GameObject newThumbnailPrefab;
-    public GameObject panel;
+    GameObject panel;
     Texture2D myImage;
     
     // directory path
-    string downloadLocation = "C:/Users/REUstudent.CSEL-KH1254-17/Documents/Projects/VRCutPaste/ar-cutpaste/server/";
+    public static string downloadLocation = "C:/Users/REUstudent.CSEL-KH1254-17/Documents/Projects/VRCutPaste/ar-cutpaste/server/";
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +41,7 @@ public class GetAllImages : MonoBehaviour
         {
             CreateThumbnail(name);
         }
+
     }
 
     // Update is called once per frame
@@ -47,22 +49,6 @@ public class GetAllImages : MonoBehaviour
     {
         
     }
-
-
-    //private void GetImageNames(string[] fileNames)
-    //{
-
-    //    // put all image names (PNG format, lowercase) in directory into array
-    //    fileNames = Directory.GetFiles(downloadLocation, "*.png");
-
-    //    UnityEngine.Debug.Log("-----------IMAGE NAMES-----------");
-    //    foreach (string name in fileNames)
-    //    {
-    //        UnityEngine.Debug.Log(name);
-    //    }
-
-    //    UnityEngine.Debug.Log("Number of images: " + fileNames.Length);
-    //}
 
     private void CreateThumbnail (string filename)
     {
@@ -110,6 +96,4 @@ public class GetAllImages : MonoBehaviour
     {
         return Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100.0f);
     }
-
-
 }

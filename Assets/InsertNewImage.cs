@@ -8,24 +8,21 @@ using Boo.Lang.Environments;
 
 public class InsertNewImage : MonoBehaviour
 {
-
     public GameObject newSpritePrefab;
-    //public GameObject rawImagePrefab;
-    public Texture2D myImage;
-    private SpriteRenderer newSprite;
+    Texture2D myImage;
 
     void Start()
     {
-        GetComponent<Button>().onClick.AddListener(TaskOnClick);
+        //transform.parent.GetComponent<Button>().onClick.AddListener(TaskOnClick);
     }
 
-    void TaskOnClick()
+    public void TaskOnClick()
     {
         StartCoroutine(GetTexture());
 
         IEnumerator GetTexture()
         {
-            string url = "file:///C:/Users/REUstudent.CSEL-KH1254-17/Documents/Projects/VRCutPaste/ar-cutpaste/server/cut_current.png";
+            string url = "file:///" + GetAllImages.downloadLocation + transform.parent.name;
 
             UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
 
@@ -58,8 +55,6 @@ public class InsertNewImage : MonoBehaviour
 
             // set new gameobject's box collider dimensions proportional to image dimensions
             float size = 0.01f; // 1 unit in Unity = 100 pixels
-            UnityEngine.Debug.Log(myImage.width);
-            UnityEngine.Debug.Log(myImage.height);
             newSprite.GetComponent<BoxCollider>().size = new Vector3(myImage.width * size, myImage.height * size, 0.2f);
         }
     }
