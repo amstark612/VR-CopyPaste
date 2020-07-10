@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -7709673727528415174}
   - component: {fileID: 5645961109573839033}
   - component: {fileID: -8284523619030348470}
+  - component: {fileID: 8263406884608019129}
   m_Layer: 0
   m_Name: NewSprite
   m_TagString: Untagged
@@ -130,3 +131,15 @@ MonoBehaviour:
   m_snapOrientation: 0
   m_snapOffset: {fileID: 0}
   m_grabPoints: []
+--- !u!114 &8263406884608019129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608914544700427728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f50f94c4fe730943aa2db671347cfe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

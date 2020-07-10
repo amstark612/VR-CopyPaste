@@ -11,11 +11,6 @@ public class InsertNewImage : MonoBehaviour
     public GameObject newSpritePrefab;
     Texture2D myImage;
 
-    void Start()
-    {
-        //transform.parent.GetComponent<Button>().onClick.AddListener(TaskOnClick);
-    }
-
     public void TaskOnClick()
     {
         StartCoroutine(GetTexture());
@@ -41,10 +36,10 @@ public class InsertNewImage : MonoBehaviour
 
 
             // get player's current position
-            Vector3 playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
+            Vector3 userPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
 
             // set spawn position of new image ahead of player
-            Vector3 spawnPosition = new Vector3(playerPosition.x, playerPosition.y, (playerPosition.z + 5));
+            Vector3 spawnPosition = new Vector3(userPosition.x, userPosition.y, (userPosition.z + 5));
             // does the new vector3 need to be destroyed?????
 
             // create new sprite

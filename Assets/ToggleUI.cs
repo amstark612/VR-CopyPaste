@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Oculus.Platform.Models;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,8 +9,9 @@ public class ToggleUI : MonoBehaviour
 
     void Start()
     {
-        //transform.SetParent(GameObject.Find("RightControllerAnchor").transform);
+        UI.SetActive(false);
     }
+
     // Update is called once per frame
     void Update()
     {
@@ -19,6 +21,14 @@ public class ToggleUI : MonoBehaviour
         {
             if (!currentState)
             {
+                // get user's current position
+                Vector3 userPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
+
+                // set UI position
+                // change y value and rotation later
+                UI.transform.position = new Vector3(userPosition.x, UI.transform.position.y, userPosition.z + 1.5f);
+
+                // show UI
                 UI.SetActive(true);
             }
 

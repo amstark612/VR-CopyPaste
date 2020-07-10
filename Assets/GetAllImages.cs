@@ -11,10 +11,10 @@ public class GetAllImages : MonoBehaviour
 {
 
     // panel sizes as set in inspector
-    int panelWidth = 676;
-    int panelPadding = 8;
-    int panelSpacing = 12;
-    float numCols = 6.0f; // float for calculation purposes later
+    private static int panelWidth = 676;
+    private static int panelPadding = 8;
+    private static int panelSpacing = 12;
+    private static float numCols = 6.0f; // float for calculation purposes later
 
     string[] fileNames;
     public GameObject newThumbnailPrefab;
@@ -22,7 +22,7 @@ public class GetAllImages : MonoBehaviour
     Texture2D myImage;
     
     // directory path
-    public static string downloadLocation = "C:/Users/REUstudent.CSEL-KH1254-17/Documents/Projects/VRCutPaste/ar-cutpaste/server/";
+    public static string downloadLocation = "C:/Users/REUstudent.CSEL-KH1254-17/Documents/Projects/VRCutPaste/ar-cutpaste/server/IMAGES/";
 
     // Start is called before the first frame update
     void Start()
@@ -42,12 +42,6 @@ public class GetAllImages : MonoBehaviour
             CreateThumbnail(name);
         }
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private void CreateThumbnail (string filename)
