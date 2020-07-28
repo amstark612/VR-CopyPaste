@@ -20,14 +20,14 @@ public class GetAllImages : MonoBehaviour
     public GameObject newThumbnailPrefab;
     GameObject panel;
     Texture2D myImage;
-    
+
     // directory path
     public static string downloadLocation = "C:/Users/REUstudent.CSEL-KH1254-17/Documents/Projects/VRCutPaste/ar-cutpaste/server/IMAGES/";
 
     // Start is called before the first frame update
     void Start()
     {
-        panel = GameObject.Find("ImageMenuPanel");
+        panel = GameObject.Find("ImageMenu");
 
         fileNames = Directory.GetFiles(downloadLocation, "*.png");
 
@@ -44,7 +44,7 @@ public class GetAllImages : MonoBehaviour
 
     }
 
-    private void CreateThumbnail (string filename)
+    private void CreateThumbnail(string filename)
     {
         StartCoroutine(GetTexture());
 
@@ -65,28 +65,27 @@ public class GetAllImages : MonoBehaviour
             else
             {
                 myImage = ((DownloadHandlerTexture)www.downloadHandler).texture as Texture2D;
+
+                // create new blank thumbnail button
+                GameObject newThumbnail = Instantiate(newThumbnailPrefab);
+
+                // set object name to name of downloaded pic (minus file path)
+                newThumbnail.name = filename.Substring(downloadLocation.Length);
+
+                // set parent so it snaps to grid
+                newThumbnail.transform.SetParent(panel.transform, false);
+
+                // convert downloaded pic to sprite
+                Sprite webSprite = SpriteFromTexture2D(myImage);
+
+                // assign downloaded pic to thumbnail
+                newThumbnail.GetComponent<Image>().sprite = webSprite;
+
             }
-
-
-            // create new blank thumbnail button
-            GameObject newThumbnail = Instantiate(newThumbnailPrefab);
-
-            // set object name to name of downloaded pic (minus file path)
-            newThumbnail.name = filename.Substring(downloadLocation.Length);
-
-            // set parent so it snaps to grid
-            newThumbnail.transform.SetParent(panel.transform, false);
-
-            // convert downloaded pic to sprite
-            Sprite webSprite = SpriteFromTexture2D(myImage);
-
-            // assign downloaded pic to thumbnail
-            newThumbnail.transform.Find("Image").GetComponent<Image>().sprite = webSprite;
-
         }
     }
 
-    Sprite SpriteFromTexture2D(Texture2D texture)
+    private Sprite SpriteFromTexture2D(Texture2D texture)
     {
         return Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100.0f);
     }
