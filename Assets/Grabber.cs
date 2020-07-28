@@ -8,6 +8,8 @@ public class Grabber : MonoBehaviour
     public OVRInput.Controller thisController;
     public OVRInput.Controller otherController;
     public GameObject otherControllerGameObject;
+
+    public Transform DeltaTransform { get; private set; }
     
     GameObject collidingObject = null;
     bool grabbing = false;
@@ -32,6 +34,15 @@ public class Grabber : MonoBehaviour
         
         if (collidingObject)
         {
+            if (bimanualInteraction())
+            {
+                collidingObject.GetComponent<Grabbable>().grabbedByBoth = true;
+
+                Transform lastTransform = collidingObject.transform;
+
+                CalculateDeltaTransform();
+            }
+
             if (!grabbing && handTrigger > grabBegin)
             {
                 Grab();
@@ -48,15 +59,17 @@ public class Grabber : MonoBehaviour
 
     private void Grab()
     {
-        if (bimanualInteraction())
-        {
-            collidingObject.GetComponent<Grabbable>().grabbedByBoth = true;
-        }
+        //if (bimanualInteraction())
+        //{
+        //    collidingObject.GetComponent<Grabbable>().grabbedByBoth = true;
+        //}
 
-        else
-        {
-            PickUp();
-        }
+        //else
+        //{
+        //    PickUp();
+        //}
+
+        collidingObject.transform.SetParent(this.transform);
     }
     
     private bool bimanualInteraction()
@@ -66,15 +79,20 @@ public class Grabber : MonoBehaviour
         return other.grabbing && collidingObject == other.collidingObject;
     }
 
-    private void PickUp()
-    {
-        collidingObject.transform.SetParent(this.transform);
-    }
+    //private void PickUp()
+    //{
+    //    collidingObject.transform.SetParent(this.transform);
+    //}
 
     private void Drop()
     {
         // do I need to change this? what if it was parented by something else originally?
         collidingObject.transform.SetParent(null);
         collidingObject = null;
+    }
+
+    private Transform CalculateDeltaTransform()
+    {
+        return;
     }
 }
