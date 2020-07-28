@@ -40,7 +40,7 @@ public class Grabber : MonoBehaviour
 
                 Transform lastTransform = collidingObject.transform;
 
-                CalculateDeltaTransform();
+                //CalculateDeltaTransform();
             }
 
             if (!grabbing && handTrigger > grabBegin)
@@ -91,8 +91,8 @@ public class Grabber : MonoBehaviour
         collidingObject = null;
     }
 
-    private Transform CalculateDeltaTransform()
-    {
-        return;
-    }
+    //private Transform CalculateDeltaTransform()
+    //{
+    //    return;
+    //}
 }
