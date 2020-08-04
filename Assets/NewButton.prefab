@@ -162,3 +162,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   newSpritePrefab: {fileID: 1608914544700427728, guid: 4058b83645c577a49a98a43c4ba2984e,
     type: 3}
+  grabbableLayer: 8

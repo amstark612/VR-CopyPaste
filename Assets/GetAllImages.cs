@@ -17,17 +17,18 @@ public class GetAllImages : MonoBehaviour
     private static float numCols = 6.0f; // float for calculation purposes later
 
     string[] fileNames;
-    public GameObject newThumbnailPrefab;
-    GameObject panel;
+    [SerializeField]
+    private GameObject newThumbnailPrefab;
+    [SerializeField]
+    private GameObject panel;
     Texture2D myImage;
 
     // directory path
-    public static string downloadLocation = "C:/Users/REUstudent.CSEL-KH1254-17/Documents/Projects/VRCutPaste/ar-cutpaste/server/IMAGES/";
+    public string downloadLocation = "C:/Users/REUstudent.CSEL-KH1254-17/Documents/Projects/VRCutPaste/ar-cutpaste/server/IMAGES/";
 
     // Start is called before the first frame update
     void Start()
     {
-        panel = GameObject.Find("ImageMenu");
 
         fileNames = Directory.GetFiles(downloadLocation, "*.png");
 

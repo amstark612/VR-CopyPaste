@@ -5,7 +5,12 @@ using UnityEngine;
 
 public class ToggleUI : MonoBehaviour
 {
-    public GameObject UI;
+    [SerializeField]
+    private GameObject UI;
+    [SerializeField]
+    private GameObject player;
+    [SerializeField]
+    private OVRInput.Controller controller;
 
     void Start()
     {
@@ -17,12 +22,12 @@ public class ToggleUI : MonoBehaviour
     {
         bool currentState = UI.activeSelf;
         
-        if (OVRInput.GetDown(OVRInput.Button.One, OVRInput.Controller.RTouch))
+        if (OVRInput.GetDown(OVRInput.Button.One, controller))
         {
             if (!currentState)
             {
                 // get user's current position
-                Vector3 userPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
+                Vector3 userPosition = player.transform.position;
 
                 // set UI position
                 // change y value and rotation later

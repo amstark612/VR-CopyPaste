@@ -7,8 +7,11 @@ using UnityEngine.UI;
 
 public class InsertSprite : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject newSpritePrefab;
 
-    public GameObject newSpritePrefab;
+    [SerializeField]
+    private int grabbableLayer;
 
     public void TaskOnClick()
     {
@@ -24,6 +27,9 @@ public class InsertSprite : MonoBehaviour
 
         // create new sprite
         GameObject newObject = Instantiate(newSpritePrefab, spawnPosition, Quaternion.identity);
+
+        // set layer to grabbable layer
+        newObject.layer = grabbableLayer;
 
         SpriteRenderer spriteRenderer = newObject.GetComponent<SpriteRenderer>();
         // assign thumbnail sprite to new object
