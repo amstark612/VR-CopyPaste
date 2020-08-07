@@ -38,7 +38,9 @@ public class Grabber : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<Grabbable>())
+        bool alreadyGrabbing = grabbing || raycastGrabbing;
+
+        if (!alreadyGrabbing && other.GetComponent<Grabbable>())
         {
             collidingObject = other.gameObject;
         }
@@ -49,29 +51,31 @@ public class Grabber : MonoBehaviour
         float handTrigger = OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger, thisController);
         float indexTrigger = OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger, thisController);
 
+        // "normal"? interaction ------------------------------------
         if (collidingObject)
         {
             Grabbable grabbable = collidingObject.GetComponent<Grabbable>();
-
+            
+            // bimanualInteraction() checks that both controllers are grabbing same object
+            // grabbable.bimanualInteracting is true AFTER the first intial frame when both controllers grab object
             if (grabbing && bimanualInteraction() && !grabbable.bimanualInteracting)
             {
                 grabbable.grabbedByBoth = true;
-                Debug.Log("grabbing && BimanualInteraction() && !grabbable.bimanualInteracting");
             }
 
             if (!grabbing && handTrigger > grabBegin)
             {
                 Grab();
-                Debug.Log("!grabbing && handTrigger > grabBegin");
             }
             
             else if (grabbing && handTrigger < grabEnd)
             {
                 Drop();
-                Debug.Log("grabbing && handTrigger < grabEnd");
             }
         }
+        // ----------------------------------------------------------
 
+        // ray interaction ------------------------------------------
         else
         {
             if (indexTrigger > grabBegin)
@@ -85,14 +89,14 @@ public class Grabber : MonoBehaviour
                 if (!raycastGrabbing && hitTarget)
                 {
                     Debug.Log("!raycastGrabbing && hitTarget");
-                    // change color
+                    // add change line renderer color here (hover color)
                     DrawLaser(hit.point);
 
                     raycastGrabbing = handTrigger > grabBegin ? true : false;
 
                     if (raycastGrabbing)
                     {
-                        // pick up object
+                        // add change line renderer color here (select color)
                         Debug.Log("raycastGrabbing, should be picking up target");
                         raycastObject = hit.transform.gameObject;
                         raycastObject.transform.parent = this.transform;
@@ -103,47 +107,40 @@ public class Grabber : MonoBehaviour
                 {
                     Debug.Log("raycastGrabbing, should be drawing laser to object");
 
+                    // ensure controller input is used to move object, not player
                     player.EnableLinearMovement = false;
                     player.EnableRotation = false;
 
+                    // pushing/pulling object farther/closer
                     if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickUp, thisController))
                     {
                         raycastObject.transform.position += transform.forward * Time.deltaTime * 2.0f;
-                        DrawLaser(raycastObject.transform.position);
                     }
 
                     else if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickDown, thisController))
                     {
                         raycastObject.transform.position -= transform.forward * Time.deltaTime * 2.0f;
-                        DrawLaser(raycastObject.transform.position);
                     }
 
-                    else
-                    {
-                        DrawLaser(raycastObject.transform.position);
-                    }
+                    DrawLaser(raycastObject.transform.position);
                 }
 
-                else if (raycastGrabbing && handTrigger < grabEnd)
+                else if (raycastGrabbing && (handTrigger < grabEnd || indexTrigger < grabEnd))
                 {
                     Debug.Log("should be dropping");
-
-                    player.EnableLinearMovement = true;
-                    player.EnableRotation = true;
-
-                    raycastObject.transform.parent = null;
-                    raycastObject = null;
-                    raycastGrabbing = false;
+                    Drop();
                 }
 
             }
 
             else if (laser.enabled && indexTrigger < grabEnd)
             {
-                laser.enabled = false;
                 Debug.Log("laser.enabled && indexTrigger < grabEnd");
+                Drop();
+                laser.enabled = false;
             }
         }
+        // ----------------------------------------------------------
     }
 
     private void Grab()
@@ -153,6 +150,7 @@ public class Grabber : MonoBehaviour
         grabbing = true;
     }
     
+    // checks if both controllers are grabbing AND grabbing same object
     private bool bimanualInteraction()
     {
         Grabber other = otherControllerGameObject.GetComponent<Grabber>();
@@ -162,11 +160,24 @@ public class Grabber : MonoBehaviour
 
     private void Drop()
     {
-        // do I need to change this? what if it was parented by something else originally?
-        collidingObject.transform.SetParent(null);
-        collidingObject = null;
+        if (raycastGrabbing)
+        {
+            player.EnableLinearMovement = true;
+            player.EnableRotation = true;
 
-        grabbing = false;
+            // do I need to change this? what if it was parented by something else originally?
+            raycastObject.transform.parent = null;
+            raycastObject = null;
+            raycastGrabbing = false;
+        }
+
+        else if (grabbing)
+        {
+            // do I need to change this? what if it was parented by something else originally?
+            collidingObject.transform.SetParent(null);
+            collidingObject = null;
+            grabbing = false;
+        }
     }
 
     private void DrawLaser(Vector3 endpoint)
